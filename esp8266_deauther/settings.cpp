@@ -268,6 +268,10 @@ namespace settings {
         return data.display;
     }
 
+    const battery_settings_t& getBatterySettings() {
+        return data.battery;
+    }
+
     // ===== SETTERS ===== //
 
     void setAllSettings(settings_t& newSettings) {
@@ -318,6 +322,11 @@ namespace settings {
 
     void setDisplaySettings(const display_settings_t& display) {
         data.display = display;
+        changed      = true;
+    }
+
+    void setBatterySettings(const battery_settings_t& battery) {
+        data.battery = battery;
         changed      = true;
     }
 }

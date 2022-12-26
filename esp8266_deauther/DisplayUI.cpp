@@ -3,6 +3,7 @@
 #include "DisplayUI.h"
 
 #include "settings.h"
+#include "Battery.h"
 
 // ===== adjustable ===== //
 void DisplayUI::configInit() {
@@ -758,6 +759,22 @@ void DisplayUI::drawMenu() {
         tmp = (currentMenu->selected == i ? CURSOR : SPACE) + tmp;
         drawString(0, (i - row) * 12, tmp);
     }
+
+    // blinking
+    if (currentTime > blinkTime + blinkInterval)
+        blinkTime = currentTime;
+
+    // draw battery status
+    double battery = battery::getPercentage(settings::getBatterySettings().calibration_factor, 64);
+    String batteryStatus;
+    if (battery < 20.0) {
+        if (currentTime - blinkTime < blinkInterval / 2)
+            batteryStatus += F("!");
+        else
+            F(" ");
+    }
+    batteryStatus += String((int)battery) + F("%");
+    drawString(0, right(batteryStatus, maxLen));
 }
 
 void DisplayUI::drawLoadingScan() {

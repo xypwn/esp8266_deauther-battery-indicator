@@ -109,6 +109,7 @@ class DisplayUI {
         const uint16_t screenIntroTime = 2500;
         const uint16_t screenWidth     = 128;
         const uint16_t sreenHeight     = 64;
+        const uint8_t blinkInterval    = 500; // 500ms = 2Hz
 
         void configInit();
         void configOn();
@@ -140,6 +141,7 @@ class DisplayUI {
         uint32_t drawTime   = 0;   // last time a frame was drawn
         uint32_t startTime  = 0;   // when the screen was enabled
         uint32_t buttonTime = 0;   // last time a button was pressed
+        uint32_t blinkTime  = 0;   // last time something blinked
 
         bool enabled = false;      // display enabled
         bool tempOff = false;

@@ -605,6 +605,25 @@
   #define WEB_URL "deauth.me"
 #endif // ifndef WEB_URL
 
+// ===== Battery ===== //
+#ifndef BATTERY_VOLTAGE_ADJUST
+  // When operating at battery voltage (3.2-4.2V, the voltage regulator may have different characteristics than at the 5V the system was calibrated with.
+  // I found a simple subtraction can balance this out pretty well.
+  #define BATTERY_VOLTAGE_ADJUST -0.1
+#endif // ifndef BATTERY_VOLTAGE_ADJUST
+
+#ifndef BATTERY_DISCHARGE_CURVE
+  // This is just one approximation of a LiPo battery operating at low power
+  // Discharge profile taken from <https://learn.adafruit.com/assets/979>, digitized with
+  // <https://plotdigitizer.com/> and fitted using desmos <https://www.desmos.com/calculator/jqzgpjprm0>
+  // Note that discharge profiles can vary depending on battery model, health and discharge rate
+  #define BATTERY_DISCHARGE_CURVE { \
+      {2.66648, 70.7887, 3.67506, 107.001, 0.280447}, /* Sigmoidal curve */ \
+      {3.2,     3.549,   0.0,     5.0},               /* Low linear threshold / low linear part */ \
+      {4.098,   4.2,     95.0,    100.0},             /* High linear threshold / high linear part */ \
+  };
+#endif // ifndef BATTERY_DISCHARGE_CURVE
+
 // ======== CONSTANTS ========== //
 // Do not change these values unless you know what you're doing!
 #define DEAUTHER_VERSION "2.6.1"
@@ -614,7 +633,8 @@
 
 #define EEPROM_SIZE 4095
 #define BOOT_COUNTER_ADDR 1
-#define SETTINGS_ADDR 100
+#define DATE_ADDR 100
+#define SETTINGS_ADDR 140
 
 // ======== AVAILABLE SETTINGS ========== //
 

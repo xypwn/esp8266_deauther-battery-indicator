@@ -31,6 +31,7 @@ extern "C" {
 #include "CLI.h"
 #include "DisplayUI.h"
 #include "A_config.h"
+#include "Battery.h"
 
 #include "led.h"
 
@@ -52,6 +53,8 @@ uint32_t autosaveTime = 0;
 uint32_t currentTime  = 0;
 
 bool booted = false;
+static const char dateString[] = __DATE__ " " __TIME__;
+bool freshBoot = false; // true if first boot after upload
 
 void setup() {
     // for random generator
@@ -105,6 +108,39 @@ void setup() {
     settings::reset();
     settings::save();
     #endif // ifndef RESET_SETTINGS
+
+    // check if last date stored in EEPROM matches upload date
+    for (size_t i = 0; i < 40; i++) {
+        char c = EEPROM.read(DATE_ADDR + i);
+        if (c != dateString[i]) {
+            // strings don't match -> fresh boot
+            freshBoot = true;
+            break;
+        } else if (c == 0)
+            // strings match -> repeated boot
+            break;
+    }
+
+    if (freshBoot) {
+        // save new date string to EEPROM
+        for (size_t i = 0;; i++) {
+            EEPROM.write(DATE_ADDR + i, dateString[i]);
+            if (dateString[i] == 0)
+                break;
+        }
+        EEPROM.commit();
+
+        // calibrate battery voltage tracker
+        auto batterySettings = settings::getBatterySettings();
+        batterySettings.calibration_factor = battery::calibrate(5.0, 64);
+        settings::setBatterySettings(batterySettings);
+        settings::save();
+    }
+
+    prnt(SETUP_BATTERY_CALIBRATION_FACTOR);
+    prntln(String(settings::getBatterySettings().calibration_factor, 8));
+    prnt(SETUP_FRESH_BOOT);
+    prntln(freshBoot);
 
     wifi::begin();
     wifi_set_promiscuous_rx_cb([](uint8_t* buf, uint16_t len) {

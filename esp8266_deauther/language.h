@@ -81,6 +81,8 @@ const char SETUP_SERIAL_WARNING[] PROGMEM = "Warning: Serial deactivated";
 const char SETUP_STARTED[] PROGMEM = "STARTED! \\o/";
 const char SETUP_COPYING[] PROGMEM = "Copying ";
 const char SETUP_PROGMEM_TO_SPIFFS[] PROGMEM = " from PROGMEM to SPIFFS...";
+const char SETUP_BATTERY_CALIBRATION_FACTOR[] PROGMEM = "Battery calibration factor: ";
+const char SETUP_FRESH_BOOT[] PROGMEM = "Fresh boot: ";
 
 // ===== SERIAL COMMAND LINE INTERFACE ===== //
 const char CLI_SCAN[] PROGMEM = "scan";                        // scan

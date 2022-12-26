@@ -87,6 +87,11 @@ typedef struct display_settings_t {
     uint32_t timeout;
 } display_settings_t;
 
+// ===== BATTERY ===== //
+typedef struct battery_settings_t {
+    double calibration_factor;
+} battery_settings_t;
+
 // ===== SETTINGS ===== //
 typedef struct settings_t {
     uint32_t                magic_num;
@@ -100,6 +105,7 @@ typedef struct settings_t {
     cli_settings_t          cli;
     led_settings_t          led;
     display_settings_t      display;
+    battery_settings_t      battery;
 } settings_t;
 
 namespace settings {
@@ -120,6 +126,7 @@ namespace settings {
     const cli_settings_t& getCLISettings();
     const led_settings_t& getLEDSettings();
     const display_settings_t& getDisplaySettings();
+    const battery_settings_t& getBatterySettings();
 
     void setAllSettings(settings_t& settings);
     void setAutosaveSettings(const autosave_settings_t& autosave);
@@ -131,4 +138,5 @@ namespace settings {
     void setCLISettings(const cli_settings_t& cli);
     void setLEDSettings(const led_settings_t& led);
     void setDisplaySettings(const display_settings_t& display);
+    void setBatterySettings(const battery_settings_t& battery);
 }
