@@ -769,11 +769,11 @@ void DisplayUI::drawMenu() {
     String batteryStatus;
     if (battery < 20.0) {
         if (currentTime - blinkTime < blinkInterval / 2)
-            batteryStatus += F("!");
+            batteryStatus += '!';
         else
-            F(" ");
+            batteryStatus += ' ';
     }
-    batteryStatus += String((int)battery) + F("%");
+    batteryStatus += String((int)battery) + '%';
     drawString(0, right(batteryStatus, maxLen));
 }
 

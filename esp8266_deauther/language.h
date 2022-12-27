@@ -81,13 +81,14 @@ const char SETUP_SERIAL_WARNING[] PROGMEM = "Warning: Serial deactivated";
 const char SETUP_STARTED[] PROGMEM = "STARTED! \\o/";
 const char SETUP_COPYING[] PROGMEM = "Copying ";
 const char SETUP_PROGMEM_TO_SPIFFS[] PROGMEM = " from PROGMEM to SPIFFS...";
-const char SETUP_BATTERY_CALIBRATION_FACTOR[] PROGMEM = "Battery calibration factor: ";
+const char SETUP_BATTERY_CALIBRATED[] PROGMEM = "Battery calibrated";
 const char SETUP_FRESH_BOOT[] PROGMEM = "Fresh boot: ";
 
 // ===== SERIAL COMMAND LINE INTERFACE ===== //
 const char CLI_SCAN[] PROGMEM = "scan";                        // scan
 const char CLI_REBOOT[] PROGMEM = "reboot";                    // reboot
 const char CLI_STATUS[] PROGMEM = "status";                    // status
+const char CLI_CALIBRATE[] PROGMEM = "calibrate";              // calibrate
 const char CLI_SHOW[] PROGMEM = "show";                        // show
 const char CLI_REMOVE[] PROGMEM = "remove";                    // remove
 const char CLI_SET[] PROGMEM = "set";                          // set
@@ -156,6 +157,7 @@ const char CLI_NAME[] PROGMEM = "name/s,-n";                   // name, names, -
 const char CLI_LINE[] PROGMEM = "line/s,-l";                   // line, lines, -l
 const char CLI_COMMENT[] PROGMEM = "//";                       // //
 const char CLI_SCREEN[] PROGMEM = "screen";                    // screen
+const char CLI_BATTERY[] PROGMEM = "battery";                  // battery
 const char CLI_MODE[] PROGMEM = "mode,-m";                     // mode
 const char CLI_MODE_BUTTONTEST[] PROGMEM = "buttontest";       // buttontest
 const char CLI_MODE_PACKETMONITOR[] PROGMEM = "packetmonitor"; // packetmonitor
@@ -208,6 +210,7 @@ const char CLI_HELP_LED_B[] PROGMEM = "led <#rrggbb>";
 const char CLI_HELP_DRAW[] PROGMEM = "draw";
 const char CLI_HELP_SCREEN_ON[] PROGMEM = "screen <on/off>";
 const char CLI_HELP_SCREEN_MODE[] PROGMEM = "screen mode <menu/packetmonitor/buttontest/loading>";
+const char CLI_HELP_BATTERY[] PROGMEM = "battery [<status/calibrate>]";
 
 const char CLI_INPUT_PREFIX[] PROGMEM = "# ";
 const char CLI_SERIAL_ENABLED[] PROGMEM = "Serial interface enabled";
@@ -326,6 +329,7 @@ const char CLI_SYSTEM_CHANNEL[] PROGMEM = "Current WiFi channel: ";
 const char CLI_CHANGED_SCREEN[] PROGMEM = "Changed screen mode";
 const char CLI_DEFAULT_AUTOSTART[] PROGMEM = "scan -t 5s\nsysinfo\n";
 const char CLI_RESUMED[] PROGMEM = "Command Line resumed";
+const char CLI_BATTERY_CALIBRATED[] PROGMEM = "Battery calibrated";
 
 // ===== DISPLAY ===== //
 
@@ -576,6 +580,10 @@ const char W_DOT_ZIP[] PROGMEM = ".zip";
 const char W_DOT_GZIP[] PROGMEM = ".gz";
 const char W_DOT_JSON[] PROGMEM = ".json";
 
+// ===== BATTERY ===== //
+const char B_PERCENTAGE[] PROGMEM = "percentage";
+const char B_VOLTAGE[] PROGMEM = "voltage";
+
 // ===== SETTINGS ====== //
 // Version
 const char S_JSON_VERSION[] PROGMEM = "version";
@@ -624,3 +632,6 @@ const char S_JSON_LEDENABLED[] PROGMEM = "led";
 // Display
 const char S_JSON_DISPLAYINTERFACE[] PROGMEM = "display";
 const char S_JSON_DISPLAY_TIMEOUT[] PROGMEM = "displayTimeout";
+
+// Battery
+const char S_JSON_BATTERY_CALIBRATION_FACTOR[] PROGMEM = "batteryCalibrationFactor";

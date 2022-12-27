@@ -5,6 +5,7 @@
 #include <LittleFS.h>
 #include "settings.h"
 #include "wifi.h"
+#include "Battery.h"
 
 /*
    Shitty code used less resources so I will keep this clusterfuck as it is,
@@ -288,6 +289,7 @@ void CLI::runCommand(String input) {
         prntln(CLI_HELP_DRAW);
         prntln(CLI_HELP_SCREEN_ON);
         prntln(CLI_HELP_SCREEN_MODE);
+        prntln(CLI_HELP_BATTERY);
 
         prntln(CLI_HELP_FOOTER);
     }
@@ -730,6 +732,9 @@ void CLI::runCommand(String input) {
         else if (eqls(str, S_JSON_DISPLAYINTERFACE)) prntln(settings::getDisplaySettings().enabled);
         else if (eqls(str, S_JSON_DISPLAY_TIMEOUT)) prntln(settings::getDisplaySettings().timeout);
 
+        // Battery
+        else if (eqls(str, S_JSON_BATTERY_CALIBRATION_FACTOR)) prntln(String(settings::getBatterySettings().calibration_factor, 8));
+
         else {
             prnt(_tmp);
             prntln(" setting not found");
@@ -745,6 +750,7 @@ void CLI::runCommand(String input) {
         bool     boolVal     = s2b(strVal);
         int      intVal      = strVal.toInt();
         uint32_t unsignedVal = intVal < 0 ? 0 : (uint32_t)intVal;
+        double   doubleVal   = strVal.toDouble();
 
         settings_t newSettings = settings::getAllSettings();
 
@@ -792,6 +798,9 @@ void CLI::runCommand(String input) {
         // Display
         else if (eqls(str, S_JSON_DISPLAYINTERFACE)) newSettings.display.enabled = boolVal;
         else if (eqls(str, S_JSON_DISPLAY_TIMEOUT)) newSettings.display.timeout = unsignedVal;
+
+        // Battery
+        else if (eqls(str, S_JSON_BATTERY_CALIBRATION_FACTOR)) newSettings.battery.calibration_factor = doubleVal;
 
         else {
             prnt(str);
@@ -1260,6 +1269,19 @@ void CLI::runCommand(String input) {
         } else if (eqlsCMD(1, CLI_OFF)) {
             displayUI.off();
         }
+    }
+
+    // ====== BATTERY ===== //
+    // battery [<status/calibrate>]
+    else if (eqlsCMD(0, CLI_BATTERY) && (list->size() == 1 || eqlsCMD(1, CLI_STATUS))) {
+        prntln(String(battery::getPercentage(settings::getBatterySettings().calibration_factor, 64), 0) + '%');
+        prntln(String(battery::getVoltage(settings::getBatterySettings().calibration_factor, 64), 2) + 'V');
+    }
+    else if (eqlsCMD(0, CLI_BATTERY) && eqlsCMD(1, CLI_CALIBRATE)) {
+        auto batterySettings = settings::getBatterySettings();
+        batterySettings.calibration_factor = battery::calibrate(5.0, 64);
+        settings::setBatterySettings(batterySettings);
+        prntln(CLI_BATTERY_CALIBRATED);
     }
 
     // ===== NOT FOUND ===== //

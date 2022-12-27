@@ -1,6 +1,7 @@
 /* This software is licensed under the MIT License: https://github.com/spacehuhntech/esp8266_deauther */
 
 var langJson = {};
+var batteryStatus = {};
 
 function getE(name) {
 	return document.getElementById(name);
@@ -34,12 +35,16 @@ function showMessage(msg) {
 		getE("status").innerHTML = "disconnected";
 
 		console.error("disconnected (" + msg + ")");
+
+		batteryStatus = {};
 	} else if (msg.startsWith("LOADING")) {
 		getE("status").style.backgroundColor = "#fc0";
 		getE("status").innerHTML = "loading...";
 	} else {
 		getE("status").style.backgroundColor = "#3c5";
 		getE("status").innerHTML = "connected";
+		if (batteryStatus)
+			getE("status").innerHTML += ", battery " + batteryStatus.percentage + "%";
 
 		console.log("" + msg + "");
 	}
@@ -120,7 +125,21 @@ function loadLang() {
 	);
 }
 
+function updateBatteryStatus() {
+	getFile("battery.json", function(res) {
+		batteryStatus = JSON.parse(res);
+		getE("status").style.backgroundColor = "#3c5";
+		getE("status").innerHTML = "connected, battery " + batteryStatus.percentage + "%";
+	});
+}
+
 window.addEventListener('load', function () {
 	getE("status").style.backgroundColor = "#3c5";
 	getE("status").innerHTML = "connected";
+	updateBatteryStatus();
 });
+
+// Attempt to get battery status every 60s
+setInterval(function() {
+	updateBatteryStatus();
+}, 60000);

@@ -22,6 +22,9 @@ extern bool macValid(uint8_t* mac);
 #define JSON_INT(_NAME, _VALUE)\
     str += String('"') + String(FPSTR(_NAME)) + String(F("\":")) + String(_VALUE) + String(',');
 
+#define JSON_DOUBLE(_NAME, _VALUE)\
+    str += String('"') + String(FPSTR(_NAME)) + String(F("\":")) + String(_VALUE, 8) + String(',');
+
 #define JSON_HEX(_NAME, _BYTES, _LEN)\
     str += String('"') + String(FPSTR(_NAME)) + String(F("\":\""));\
     for (int i = 0; i<_LEN; i++) {\
@@ -100,6 +103,9 @@ namespace settings {
         // Display
         JSON_FLAG(S_JSON_DISPLAYINTERFACE, data.display.enabled);
         JSON_INT(S_JSON_DISPLAY_TIMEOUT, data.display.timeout);
+
+        // Battery
+        JSON_DOUBLE(S_JSON_BATTERY_CALIBRATION_FACTOR, data.battery.calibration_factor);
 
         str.setCharAt(str.length()-1, '}');
     }

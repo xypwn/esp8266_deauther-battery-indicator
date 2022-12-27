@@ -135,10 +135,9 @@ void setup() {
         batterySettings.calibration_factor = battery::calibrate(5.0, 64);
         settings::setBatterySettings(batterySettings);
         settings::save();
+        prntln(SETUP_BATTERY_CALIBRATED);
     }
 
-    prnt(SETUP_BATTERY_CALIBRATION_FACTOR);
-    prntln(String(settings::getBatterySettings().calibration_factor, 8));
     prnt(SETUP_FRESH_BOOT);
     prntln(freshBoot);
 

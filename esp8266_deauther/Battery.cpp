@@ -3,6 +3,7 @@
 #include "Battery.h"
 
 #include "A_config.h"
+#include "language.h"
 
 struct DischargeCurve {
     // Battery discharge can be approximated by an asymmetrical sigmoidal curve: y = d + (a-d)/(1 + (x/c)^b)^m
@@ -62,7 +63,21 @@ double battery::calibrate(double voltage, size_t samples) {
     return 5.0 / (double)analogReadAverage(samples);
 }
 
+double battery::getVoltage(double calibrationFactor, size_t samples) {
+    return analogReadAverage(samples) * calibrationFactor + (double)(BATTERY_VOLTAGE_ADJUST);
+}
+
 double battery::getPercentage(double calibrationFactor, size_t samples) {
-    double voltage = analogReadAverage(samples) * calibrationFactor + (double)(BATTERY_VOLTAGE_ADJUST);
-    return dischargeCurve.apply(voltage);
+    return dischargeCurve.apply(getVoltage(calibrationFactor, samples));
+}
+
+String battery::getStatusJSON(double calibrationFactor, size_t samples) {
+    double voltage = getVoltage(calibrationFactor, samples);
+    double percentage = getPercentage(calibrationFactor, samples);
+
+    String json = String(OPEN_CURLY_BRACKET);                                                                                              // {
+    json += String(DOUBLEQUOTES) + str(B_PERCENTAGE) + String(DOUBLEQUOTES) + String(DOUBLEPOINT) + String(percentage, 0) + String(COMMA); // "percentage": 100,
+    json += String(DOUBLEQUOTES) + str(B_VOLTAGE)    + String(DOUBLEQUOTES) + String(DOUBLEPOINT) + String(voltage, 2);                    // "voltage": 3.72
+    json += CLOSE_CURLY_BRACKET;                                                                                                           // }
+    return json;
 }

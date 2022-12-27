@@ -19,6 +19,7 @@ extern "C" {
 #include "CLI.h"
 #include "Attack.h"
 #include "Scan.h"
+#include "Battery.h"
 
 extern bool progmemToSpiffs(const char* adr, int len, String path);
 
@@ -417,6 +418,10 @@ namespace wifi {
 
         server.on("/attack.json", HTTP_GET, []() {
             server.send(200, str(W_JSON), attack.getStatusJSON());
+        });
+
+        server.on("/battery.json", HTTP_GET, []() {
+            server.send(200, str(W_JSON), battery::getStatusJSON(settings::getBatterySettings().calibration_factor, 64));
         });
 
         // called when the url is not defined here

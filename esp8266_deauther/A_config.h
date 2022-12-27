@@ -607,7 +607,7 @@
 
 // ===== Battery ===== //
 #ifndef BATTERY_VOLTAGE_ADJUST
-  // When operating at battery voltage (3.2-4.2V, the voltage regulator may have different characteristics than at the 5V the system was calibrated with.
+  // When operating at battery voltage (3.2-4.2V), the voltage regulator may have different characteristics than at the 5V the system was calibrated with.
   // I found a simple subtraction can balance this out pretty well.
   #define BATTERY_VOLTAGE_ADJUST -0.1
 #endif // ifndef BATTERY_VOLTAGE_ADJUST
@@ -742,7 +742,6 @@
  #define WEB_URL "deauth.me"
 
  */
-
 
 // ========== ERROR CHECKS ========== //
 #if LED_MODE_BRIGHTNESS == 0
