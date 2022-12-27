@@ -24,7 +24,7 @@ function draw() {
 			if (typeof settingsJson[key] == "boolean") {
 				html += "<label class='checkBoxContainer'><input type='checkbox' name='" + key + "' " + (settingsJson[key] ? "checked" : "") + " onchange='save(\"" + key + "\",!settingsJson[\"" + key + "\"])'><span class='checkmark'></span></label>";
 			} else if (typeof settingsJson[key] == "number") {
-				html += "<input type='number' name='" + key + "' value=" + settingsJson[key] + " onchange='save(\"" + key + "\",parseInt(this.value))'>";
+				html += "<input type='number' name='" + key + "' value=" + settingsJson[key] + " onchange='save(\"" + key + "\",parseFloat(this.value))'>";
 			} else if (typeof settingsJson[key] == "string") {
 				html += "<input type='text' name='" + key + "' value='" + settingsJson[key].toString() + "' " + (key == "version" ? "readonly" : "") + " onchange='save(\"" + key + "\",this.value)'>";
 			}
